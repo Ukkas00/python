@@ -1,5 +1,5 @@
 """
-URL configuration for ims project.
+URL configuration for IMS project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -14,9 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from xml.etree.ElementInclude import include
 from django.contrib import admin
 from django.urls import path
+from base.views import DepartmentApiView, ProductTypeApiView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("product/types/",ProductTypeApiView.as_view({'get':'list','post':'create'})),
+    path("product/types/<int:pk>/", ProductTypeApiView.as_view({'get':'retrieve','put':'update','delete':'destroy'})),
+    path("departments/", DepartmentApiView.as_view({'get':'list','post':'create'})),
+    path("departments/<int:pk>/", DepartmentApiView.as_view({'get':'retrieve','put':'update','delete':'destroy'})),
+    path("api-auth/", include('rest_framework.urls', namespace='rest_framework')),
 ]
